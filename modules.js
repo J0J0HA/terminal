@@ -4,17 +4,64 @@ const main = registerModule(
     "Default commands"
 )
 
+const modulesman = registerModule(
+    "modules",
+    "Module Manager",
+    "Manage modules"
+)
+
+modulesman.registerCommand("modules", "Manage modules", async (full, rest) => {
+    let srest = rest.split(" ");
+    if (srest[0] == "tmpinstall") {
+        loadFile(srest[1]);
+        out("File was added for this session.");
+    }
+    else if (srest[0] == "install") {
+        loadFile(srest[1]);
+        let module_list = JSON.parse(localStorage.getItem("modules") || "[]");
+        module_list.push(srest[1]);
+        localStorage.setItem("modules", JSON.stringify(module_list));
+        out("Module was added.");
+    }
+    else if (srest[0] == "list") {
+        let module_list = JSON.parse(localStorage.getItem("modules") || "[]");
+        out("These 3rd-party modules are installed globally:");
+        for (let module in module_list) {
+            out(`[${module}] ${module_list[module]}`)
+        }
+        out("You can use 'y [index]' to uninstall the corresponding module.");
+        y_command = "modules uninstall-index ";
+    }
+    else if (srest[0] == "uninstall") {
+        let module_list = JSON.parse(localStorage.getItem("modules") || "[]");
+        const index = array.indexOf(srest[1]);
+        if (index !== -1) {
+            module_list.splice(index, 1);
+            localStorage.setItem("modules", JSON.stringify(module_list));
+            out("Module was removed.");
+        } else {
+            out("Module not found.");
+        }
+    }
+    else if (srest[0] == "uninstall-index") {
+        let module_list = JSON.parse(localStorage.getItem("modules") || "[]");
+        if (module_list.length > parseInt(srest[1])) {
+            module_list.splice(parseInt(srest[1]), 1);
+            localStorage.setItem("modules", JSON.stringify(module_list));
+            out("Module was removed.");
+        } else {
+            out("Module not found.");
+        }
+    }
+})
+
 main.registerCommand("this", "Open this project on github", async (full, rest) => {
     window.location.href = "J0J0HA/terminal";
     out("Please wait...");
 })
 
 main.registerCommand("y", "Execute the y command", async (full, rest) => {
-    if (rest) {
-        y_command = rest;
-    } else {
-        runCommand(y_command);
-    }
+    runCommand(y_command + rest);
 })
 
 main.registerCommand("copy", "Run this to copy if copying failed before", async (full, rest) => {
@@ -58,6 +105,10 @@ loadFile("module/shortlinks.js");
 loadFile("module/youtube.js");
 loadFile("module/twitch.js");
 loadFile("module/webdev.js");
+
+for (let url of JSON.parse(localStorage.getItem("modules") || "[]")) {
+    loadFile(url);
+}
 
 main.registerCommand("command_not_found", "[INTERNAL] Show notice that a command was not found.", async (full, rest) => {
     out(`The command "${rest}" could not be found. Did you mean "help"?`);
