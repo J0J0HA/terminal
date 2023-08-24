@@ -3,7 +3,7 @@ let Y_COMMAND = "";
 
 function copyToClipboard(text) {
     LAST_COPY = text;
-    var textarea = document.createElement('textarea');
+    let textarea = document.createElement('textarea');
     textarea.value = text;
     document.body.appendChild(textarea);
     textarea.select();
@@ -122,7 +122,7 @@ COMMANDS["twac"] = async (full, rest) => {
     }
 }
 
-TWCAT_SHORT = {
+const TWCAT_SHORT = {
     "mc": "minecraft",
     "dev": "software-and-game-development",
     "pydev": "software-and-game-development?tl=python",

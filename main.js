@@ -8,33 +8,6 @@ const sleep = (ms) => {
 
 const animateTitle = () => {
     document.querySelector("#title").innerText = "";
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "t"
-    // }, 100)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "TE"
-    // }, 200)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "TeR"
-    // }, 300)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "TerM"
-    // }, 400)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "TermI"
-    // }, 500)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "TermiN"
-    // }, 600)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "TerminA"
-    // }, 700)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "TerminaL"
-    // }, 800)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "Terminal"
-    // }, 900)
 }
 
 const startTitleCursor = () => {
