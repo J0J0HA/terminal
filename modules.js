@@ -56,7 +56,7 @@ modulesman.registerCommand("modules", "Manage modules", async (full, rest) => {
 })
 
 main.registerCommand("this", "Open this project on github", async (full, rest) => {
-    window.location.href = "J0J0HA/terminal";
+    window.location.href = "https://github.com/J0J0HA/terminal";
     out("Please wait...");
 })
 
