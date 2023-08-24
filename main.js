@@ -1,5 +1,11 @@
 let COMMANDS = {};
 
+const sleep = (ms) => {
+    return new Promise((resolve, reject) => {
+        setTimeout(resolve, ms);
+    })
+}
+
 const animateTitle = () => {
     document.querySelector("#title").innerText = "";
     // setTimeout(() => {
@@ -131,14 +137,26 @@ const loop = async () => {
     }
     while (true) {
         let command = await ask();
-        await runCommand(command)
+        await runCommand(command);
     }
 }
 
-const setup = () => {
+const setup = async () => {
+    out("Starting 'Title Sandbox'...");
     startTitleSandbox();
+    await sleep(100);
+    out("Starting 'Title Cursor'...");
+    await sleep(50);
     startTitleCursor();
+    out("Starting 'Title Animation'...");
+    await sleep(200);
     animateTitle();
+    out("Setting Event Listeners...");
+    await sleep(85);
     setTriggers();
-    loop();
+    out("Starting REPL...");
+    await sleep(250);
+    document.querySelector("#console").innerText = "";
+    await loop();
+    out("If you see this, something has gone clearly wrong.");
 }
