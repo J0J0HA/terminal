@@ -58,7 +58,7 @@ const out = (text) => {
 }
 
 const ask = (prompt) => {
-    document.querySelector("#console").innerText += "> "
+    document.querySelector("#console").innerHTML += ">&nbsp;"
     const input = document.createElement("span");
     input.classList.add("input");
     input.classList.add("active");
