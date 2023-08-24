@@ -1,8 +1,8 @@
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
     xmlns:moz="http://www.mozilla.org/2006/browser/search/">
     <ShortName>Terminal</ShortName>
-    <Description>Terminal Search</Description>
+    <Description>Terminal</Description>
     <InputEncoding>UTF-8</InputEncoding>
-    <Url type="text/html" template="http://basil/terminal?cmd={searchTerms}"/>
-    <moz:SearchForm>http://basil/terminal</moz:SearchForm>
+    <Url type="text/html" template="https://j0j0ha.github.io/terminal/?cmd={searchTerms}"/>
+    <moz:SearchForm>https://j0j0ha.github.io/terminal/</moz:SearchForm>
 </OpenSearchDescription>
