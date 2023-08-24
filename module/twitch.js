@@ -38,7 +38,7 @@ twitch.registerCommand("twcat", "Show a twitch category", async (full, rest) => 
     out("Please wait...");
 })
 
-twitch.registerCommand("twcat", "List availible twitch categories", async (full, rest) => {
+twitch.registerCommand("twcat-all", "List availible twitch categories", async (full, rest) => {
     out("The following categories are availible:");
     for (let category of Object.keys(TWCAT_SHORT)) {
         out(`- ${category}`);
