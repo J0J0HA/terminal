@@ -11,6 +11,10 @@ function copyToClipboard(text) {
     document.body.removeChild(textarea);
 }
 
+COMMANDS["this"] = async (full, rest) => {
+    runCommand("gh J0J0HA/terminal")
+}
+
 COMMANDS["help"] = async (full, rest) => {
     out("There is no help.");
 }
@@ -207,9 +211,7 @@ COMMANDS["nggyu"] = async (full, rest) => {
 }
 
 COMMANDS["sleep"] = (full, rest) => {
-    return new Promise((resolve, reject) => {
-        setTimeout(resolve, parseInt(rest));
-    })
+    sleep(parseInt(rest))
 }
 
 COMMANDS["short"] = async (full, rest) => {
