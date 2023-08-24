@@ -1,4 +1,17 @@
-let COMMANDS = {};
+let modules = {}
+let commands = {};
+let last_copy = "";
+let y_command = "";
+
+function copyToClipboard(text) {
+    last_copy = text;
+    let textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+}
 
 const sleep = (ms) => {
     return new Promise((resolve, reject) => {
@@ -6,35 +19,37 @@ const sleep = (ms) => {
     })
 }
 
+const alias = (id) => {
+    return commands[id].handler;
+}
+
+const registerModule = (id, name, description) => {
+    modules[id] = {
+        name, description, commands: {}
+    }
+    return {
+        id,
+        registerCommand: (cmd, description, handler) => {
+            modules[id].commands[cmd] = {
+                handler:handler, description:description
+            };
+            commands[cmd] = modules[id].commands[cmd]
+        }
+    }
+}
+
+const loadFile = (url) => {
+    return new Promise((resolve, reject) => {
+        const script_tag = document.createElement("script");
+        script_tag.src = url;
+        script_tag.onload = resolve;
+        script_tag.onerror = reject;
+        document.head.appendChild(script_tag);
+    })
+}
+
 const animateTitle = () => {
     document.querySelector("#title").innerText = "";
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "t"
-    // }, 100)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "TE"
-    // }, 200)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "TeR"
-    // }, 300)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "TerM"
-    // }, 400)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "TermI"
-    // }, 500)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "TermiN"
-    // }, 600)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "TerminA"
-    // }, 700)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "TerminaL"
-    // }, 800)
-    // setTimeout(() => {
-    //     document.querySelector("#title").innerText = "Terminal"
-    // }, 900)
 }
 
 const startTitleCursor = () => {
@@ -123,11 +138,11 @@ const runCommand = async (command) => {
         command = `open ${command}`;
     }
     let base_command = command.split(" ")[0];
-    if (Object.keys(COMMANDS).indexOf(base_command) == -1) {
+    if (Object.keys(commands).indexOf(base_command) == -1) {
         command = "command_not_found " + command;
         base_command = "command_not_found";
     }
-    await COMMANDS[base_command](command, command.substring(base_command.length + 1));
+    await commands[base_command].handler(command, command.substring(base_command.length + 1));
 }
 
 const loop = async () => {
@@ -154,6 +169,8 @@ const setup = async () => {
     out("Setting Event Listeners...");
     await sleep(85);
     setTriggers();
+    out("Loading Commands...");
+    loadFile("modules.js");
     out("Starting REPL...");
     await sleep(250);
     document.querySelector("#console").innerText = "";
