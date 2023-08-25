@@ -181,3 +181,5 @@ const setup = async () => {
     await loop();
     out("If you see this, something has gone clearly wrong.");
 }
+
+document.addEventListener("DOMContentLoaded", setup);
