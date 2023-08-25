@@ -18,120 +18,131 @@ window.modifyHref = (href) => {
 }
 
 const sleep = (ms) => {
-    return new Promise((resolve, reject) => {
-        setTimeout(resolve, ms);
-    })
-}
-
-const alias = (id) => {
-    return commands[id].handler;
-}
-
-const registerModule = (id, name, description) => {
-    modules[id] = {
-        name, description, commands: {}
+    // Command handling functions
+    let modules = {}
+    let commands = {};
+    let last_copy = "";
+    let y_command = "";
+    
+    // Returns the handler of a command
+    const alias = (id) => {
+        return commands[id].handler;
     }
-    return {
-        id,
-        registerCommand: (cmd, description, handler) => {
-            modules[id].commands[cmd] = {
-                handler:handler, description:description
+    
+    // Registers a module with its commands
+    const registerModule = (id, name, description) => {
+        modules[id] = {
+            name, description, commands: {}
+        }
+        return {
+            id,
+            registerCommand: (cmd, description, handler) => {
+                modules[id].commands[cmd] = {
+                    handler:handler, description:description
+                };
+                commands[cmd] = modules[id].commands[cmd]
+            }
+        }
+    // UI manipulation functions
+    
+    // Copies a text to the clipboard
+    function copyToClipboard(text) {
+        last_copy = text;
+        let textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+    }
+    
+    // Modifies the href of the window
+    window.modifyHref = (href) => {
+        window.location.href = href;
+    }
+    
+    // Animates the title
+    const animateTitle = () => {
+        document.querySelector("#title").innerText = "";
+    }
+    
+    // Starts the title cursor
+    const startTitleCursor = () => {
+        setInterval(() => {
+            document.querySelector("#title-cursor").innerText = "▐";
+            setTimeout(() => {
+                document.querySelector("#title-cursor").innerText = "";
+            }, 300)
+        }, 500)
+    }
+    
+    // Starts the title sandbox
+    const startTitleSandbox = () => {
+        setInterval(() => {
+            document.querySelector("title").innerText = document.querySelector("#title-simulator").innerText
+        }, 50)
+    }
+    
+    // Outputs a text to the console
+    const out = (text) => {
+        document.querySelector("#console").innerText += text;
+        document.querySelector("#console").innerHTML += "<br>";
+    }
+    
+    // Asks for a command input
+    const ask = (prompt) => {
+        document.querySelector("#console").innerHTML += ">&nbsp;"
+        const input = document.createElement("span");
+        input.classList.add("input");
+        input.classList.add("active");
+        input.contentEditable = true;
+        document.querySelector("#console").appendChild(input);
+        return new Promise((resolve, reject) => {
+            const keydown = (event) => {
+                if (event.key == "Enter" || event.key == "Escape") {
+                    input.removeEventListener("keydown", keydown);
+                    input.removeEventListener("keyup", keyup);
+                    document.querySelector("#console").innerHTML += "<br>";
+                    localStorage.setItem("lastCommand", input.innerText);
+                    event.preventDefault();
+                    input.classList.remove("active");
+                    input.contentEditable = false;
+                    animateTitle();
+                }
+                if (event.key == "Enter") {
+                    resolve(input.innerText);
+                }
+                else if (event.key == "Escape") {
+                    document.querySelector("#console").innerText = "";
+                    reject("Escape");
+                    loop();
+                }
+                else if (event.key == "ArrowUp") {
+                    input.innerText = localStorage.getItem("lastCommand");
+                }
+                else if (event.key == "ArrowDown") {
+                    input.innerText = "";
+                }
             };
-            commands[cmd] = modules[id].commands[cmd]
-        }
-    }
-}
-
-const loadFile = (url) => {
-    return new Promise((resolve, reject) => {
-        const script_tag = document.createElement("script");
-        script_tag.src = url;
-        script_tag.onload = resolve;
-        script_tag.onerror = reject;
-        document.head.appendChild(script_tag);
-    })
-}
-
-const animateTitle = () => {
-    document.querySelector("#title").innerText = "";
-}
-
-const startTitleCursor = () => {
-    setInterval(() => {
-        document.querySelector("#title-cursor").innerText = "▐";
-        setTimeout(() => {
-            document.querySelector("#title-cursor").innerText = "";
-        }, 300)
-    }, 500)
-}
-
-const startTitleSandbox = () => {
-    setInterval(() => {
-        document.querySelector("title").innerText = document.querySelector("#title-simulator").innerText
-    }, 50)
-}
-
-const out = (text) => {
-    document.querySelector("#console").innerText += text;
-    document.querySelector("#console").innerHTML += "<br>";
-}
-
-const ask = (prompt) => {
-    document.querySelector("#console").innerHTML += ">&nbsp;"
-    const input = document.createElement("span");
-    input.classList.add("input");
-    input.classList.add("active");
-    input.contentEditable = true;
-    document.querySelector("#console").appendChild(input);
-    return new Promise((resolve, reject) => {
-        const keydown = (event) => {
-            if (event.key == "Enter" || event.key == "Escape") {
-                input.removeEventListener("keydown", keydown);
-                input.removeEventListener("keyup", keyup);
-                document.querySelector("#console").innerHTML += "<br>";
-                localStorage.setItem("lastCommand", input.innerText);
-                event.preventDefault();
-                input.classList.remove("active");
-                input.contentEditable = false;
-                animateTitle();
-            }
-            if (event.key == "Enter") {
-                resolve(input.innerText);
-            }
-            else if (event.key == "Escape") {
-                document.querySelector("#console").innerText = "";
-                reject("Escape");
-                loop();
-            }
-            else if (event.key == "ArrowUp") {
-                input.innerText = localStorage.getItem("lastCommand");
-            }
-            else if (event.key == "ArrowDown") {
-                input.innerText = "";
-            }
-        };
-        const keyup = (event) => {
-            document.querySelector("#title").innerText = input.innerText;
-        };
-        input.addEventListener("keydown", keydown)
-        input.addEventListener("keyup", keyup)
-    })
-}
-
-const setTriggers = () => {
-    document.querySelector("body").addEventListener("click", () => {
-        const input = document.querySelector(".input.active");
-        input.focus();
-        input.scrollIntoView();
-    });
-
-    document.querySelector("body").addEventListener("keydown", (event) => {
-        const input = document.querySelector(".input.active");
-        if (input.innerText == "") {
+            const keyup = (event) => {
+                document.querySelector("#title").innerText = input.innerText;
+            // Removed unnecessary function
+    
+    // Sets the triggers for the input
+    const setTriggers = () => {
+        document.querySelector("body").addEventListener("click", () => {
+            const input = document.querySelector(".input.active");
             input.focus();
-        }
-    });
-}
+            input.scrollIntoView();
+        });
+    
+        document.querySelector("body").addEventListener("keydown", (event) => {
+            const input = document.querySelector(".input.active");
+            if (input.innerText == "") {
+                input.focus();
+            }
+        });
+    }
 
 const params = new Proxy(new URLSearchParams(window.location.search), {
     get: (searchParams, prop) => searchParams.get(prop),
