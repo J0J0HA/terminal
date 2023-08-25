@@ -5,7 +5,7 @@ const whatsapp = registerModule(
 )
 
 whatsapp.registerCommand("whatsapp", "Open WhatsApp Web", async (full, rest) => {
-    window.location.href = "https://web.whatsapp.com/";
+    window.modifyHref("https://web.whatsapp.com/");
     out("Please wait...");
 })
 
