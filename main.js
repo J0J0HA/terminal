@@ -1,7 +1,6 @@
 let modules = {}
 let commands = {};
 let last_copy = "";
-let y_command = "";
 
 function copyToClipboard(text) {
     last_copy = text;
