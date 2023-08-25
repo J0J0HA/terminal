@@ -6,16 +6,16 @@ const twitch = registerModule(
 
 twitch.registerCommand("tw", "Open Twitch or search on it", async (full, rest) => {
     if (rest) {
-        window.location.href = `https://www.twitch.tv/search?term=${encodeURIComponent(rest)}`;
+        window.modifyHref(`https://www.twitch.tv/search?term=${encodeURIComponent(rest)}`);
     } else {
-        window.location.href = "https://www.twitch.tv/"
+        window.modifyHref("https://www.twitch.tv/")
     }
     out("Please wait...");
 })
 
 twitch.registerCommand("twac", "Show a twitch profile", async (full, rest) => {
     if (rest) {
-        window.location.href = `https://www.twitch.tv/${encodeURIComponent(rest)}`;
+        window.modifyHref(`https://www.twitch.tv/${encodeURIComponent(rest)}`);
         out("Please wait...");
     } else {
         out("You need to specify a name.");
@@ -31,9 +31,9 @@ const TWCAT_SHORT = {
 
 twitch.registerCommand("twcat", "Show a twitch category", async (full, rest) => {
     if (rest) {
-        window.location.href = `https://www.twitch.tv/directory/category/${TWCAT_SHORT[rest] || rest}`;
+        window.modifyHref(`https://www.twitch.tv/directory/category/${TWCAT_SHORT[rest] || rest}`);
     } else {
-        window.location.href = "https://www.twitch.tv/directory/category/"
+        window.modifyHref("https://www.twitch.tv/directory/category/")
     }
     out("Please wait...");
 })

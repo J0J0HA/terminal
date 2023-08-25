@@ -6,9 +6,9 @@ const you = registerModule(
 
 you.registerCommand("you", "Search with youchat", async (full, rest) => {
     if (rest) {
-        window.location.href = `https://you.com/search?q=${encodeURIComponent(rest)}&tbm=youchat&fromExtension=true`;
+        window.modifyHref(`https://you.com/search?q=${encodeURIComponent(rest)}&tbm=youchat&fromExtension=true`);
     } else {
-        window.location.href = "https://you.com/"
+        window.modifyHref("https://you.com/")
     }
     out("Please wait...");
 })
@@ -17,9 +17,9 @@ you.registerCommand("u", "Alias: you", alias("you"))
 
 you.registerCommand("you-search", "Search on you", async (full, rest) => {
     if (rest) {
-        window.location.href = `https://you.com/search?q=${encodeURIComponent(rest)}&fromExtension=true`;
+        window.modifyHref(`https://you.com/search?q=${encodeURIComponent(rest)}&fromExtension=true`);
     } else {
-        window.location.href = "https://you.com/"
+        window.modifyHref("https://you.com/")
     }
     out("Please wait...");
 })
@@ -28,9 +28,9 @@ you.registerCommand("us", "Alias: you-search", alias("you-search"))
 
 you.registerCommand("chat", "Open a specific you-chat session or you-chat", async (full, rest) => {
     if (rest) {
-        window.location.href = `https://you.com/search?q=Loading...&cid=${rest}&tbm=youchat`;
+        window.modifyHref(`https://you.com/search?q=Loading...&cid=${rest}&tbm=youchat`);
     } else {
-        window.location.href = "https://you.com/chat";
+        window.modifyHref("https://you.com/chat");
     }
 })
 

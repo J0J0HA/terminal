@@ -13,7 +13,7 @@ shortlinks.registerCommand("short", "Shorten a link on is.gd", async (full, rest
         out("The link is: " + json.shorturl);
         copyToClipboard(json.shorturl);
     } else {
-        window.location.href = "https://is.gd/";
+        window.modifyHref("https://is.gd/");
     }
 })
 
@@ -26,6 +26,6 @@ shortlinks.registerCommand("shortv", "Shorten a link on v.gd", async (full, rest
         out("The link is: " + json.shorturl);
         copyToClipboard(json.shorturl);
     } else {
-        window.location.href = "https://v.gd/";
+        window.modifyHref("https://v.gd/");
     }
 })

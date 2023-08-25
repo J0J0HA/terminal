@@ -5,11 +5,11 @@ const webdev = registerModule(
 )
 
 webdev.registerCommand("pen", "Start a new codepen", async (full, rest) => {
-    window.location.href = `https://pen.new/`;
+    window.modifyHref(`https://pen.new/`);
     out("Please wait...");
 })
 
 webdev.registerCommand("keycode", "Open keycode explorer", async (full, rest) => {
-    window.location.href = `https://keycode.info/`;
+    window.modifyHref(`https://keycode.info/`);
     out("Please wait...");
 })

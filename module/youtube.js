@@ -6,7 +6,7 @@ const youtube = registerModule(
 
 youtube.registerCommand("youtube", "Search with youchat", async (full, rest) => {
     if (rest) {
-        window.location.href = `https://www.youtube.com/results?search_query=${encodeURIComponent(rest)}`;
+        window.modifyHref(`https://www.youtube.com/results?search_query=${encodeURIComponent(rest)}`);
     } else {
         window.location.href = "https://www.youtube.com/"
     }
