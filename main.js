@@ -16,6 +16,9 @@ function copyToClipboard(text) {
 window.modifyHref = (href) => {
     window.location.href = href;
 }
+window.setTitle = (title) => {
+    document.querySelector("title").innerText = title;
+}
 
 const sleep = (ms) => {
     return new Promise((resolve, reject) => {
@@ -67,7 +70,7 @@ const startTitleCursor = () => {
 
 const startTitleSandbox = () => {
     setInterval(() => {
-        document.querySelector("title").innerText = document.querySelector("#title-simulator").innerText
+        window.setTitle(document.querySelector("#title-simulator").innerText);
     }, 50)
 }
 
