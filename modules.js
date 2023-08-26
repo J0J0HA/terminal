@@ -56,7 +56,7 @@ modulesman.registerCommand("modules", "Manage modules", async (full, rest) => {
 })
 
 main.registerCommand("this", "Open this project on github", async (full, rest) => {
-    window.location.href = "https://github.com/J0J0HA/terminal";
+    window.modifyHref("https://github.com/gterminal-project/");
     out("Please wait...");
 })
 
@@ -89,7 +89,7 @@ main.registerCommand("help", "Show availible commands or the description of a sp
 })
 
 main.registerCommand("open", "Open the provided href", async (full, rest) => {
-    window.location.href = rest;
+    window.modifyHref(rest);
     out("Please wait...");
 })
 
