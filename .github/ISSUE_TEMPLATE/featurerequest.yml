@@ -1,0 +1,21 @@
+name: Feature Request
+assignees:
+  - J0J0HA
+description: Request a feature or enhancement.
+labels: enhancement
+body:
+  - type: checkboxes
+    id: issue-related
+    attributes:
+      label: Issue Related
+      description: Whether your feature request is related to an issue or problem.
+      options:
+        - label: Is this feature request related to a problem or issue?
+          required: false
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe what feature or enhancement you want to propose.
+      placeholder: |
+        I want to be able to delete my computers OS via terminal.
