@@ -97,14 +97,14 @@ main.registerCommand("sleep", "Do nothing and relax for the given amount of ms",
     await sleep(parseInt(rest));
 })
 
-loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/github.js");
-loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/you.js");
-loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/google.js");
-loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/openai.js");
-loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/shortlinks.js");
-loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/youtube.js");
-loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/twitch.js");
-loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/webdev.js");
+loadFile("https://gterminal.is-a.dev/modules/module/github.js");
+loadFile("https://gterminal.is-a.dev/modules/module/you.js");
+loadFile("https://gterminal.is-a.dev/modules/module/google.js");
+loadFile("https://gterminal.is-a.dev/modules/module/openai.js");
+loadFile("https://gterminal.is-a.dev/modules/module/shortlinks.js");
+loadFile("https://gterminal.is-a.dev/modules/module/youtube.js");
+loadFile("https://gterminal.is-a.dev/modules/module/twitch.js");
+loadFile("https://gterminal.is-a.dev/modules/module/webdev.js");
 
 for (let url of JSON.parse(localStorage.getItem("modules") || "[]")) {
     loadFile(url);
