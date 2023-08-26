@@ -1,6 +1,7 @@
 # Frontend
 
 [![CodeQL](https://github.com/gTerminal-project/gTerminal-project.github.io/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/gTerminal-project/gTerminal-project.github.io/actions/workflows/github-code-scanning/codeql)
+[![Deploy static content to Pages](https://github.com/gTerminal-project/gTerminal-project.github.io/actions/workflows/static.yml/badge.svg)](https://github.com/gTerminal-project/gTerminal-project.github.io/actions/workflows/static.yml)
 
 ### This repository contains the source code of the frontend.
 
