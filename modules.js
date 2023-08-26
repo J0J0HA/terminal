@@ -97,14 +97,14 @@ main.registerCommand("sleep", "Do nothing and relax for the given amount of ms",
     await sleep(parseInt(rest));
 })
 
-loadFile("module/github.js");
-loadFile("module/you.js");
-loadFile("module/google.js");
-loadFile("module/openai.js");
-loadFile("module/shortlinks.js");
-loadFile("module/youtube.js");
-loadFile("module/twitch.js");
-loadFile("module/webdev.js");
+loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/github.js");
+loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/you.js");
+loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/google.js");
+loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/openai.js");
+loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/shortlinks.js");
+loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/youtube.js");
+loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/twitch.js");
+loadFile("https://raw.githubusercontent.com/gTerminal-project/modules/main/module/module/webdev.js");
 
 for (let url of JSON.parse(localStorage.getItem("modules") || "[]")) {
     loadFile(url);
