@@ -1,0 +1,25 @@
+name: Bug Report
+description: Report a bug
+labels: bug
+body:
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: |
+        When using the "help" command, I expected to recieve a list of availible commands.
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Behavior
+      description: What happened instead of what you expected?
+      placeholder: |
+        Nothing, the program crashed and no new prompt was given. I needed to reload the page to make gTerminal work again.
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Place for screenshots, steps to reproduce, etc.
+      placeholder: |
+        I use FireFox. The issue happened in the Add-On's newtab-page.
