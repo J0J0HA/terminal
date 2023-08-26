@@ -61,9 +61,9 @@ const animateTitle = () => {
 
 const startTitleCursor = () => {
     setInterval(() => {
-        document.querySelector("#title-cursor").innerText = "▐";
+        document.querySelector("#title-cursor").innerText = " ▌";
         setTimeout(() => {
-            document.querySelector("#title-cursor").innerText = "";
+            document.querySelector("#title-cursor").innerText = "   ";
         }, 300)
     }, 500)
 }
