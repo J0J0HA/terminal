@@ -1,5 +1,5 @@
-# terminal
+# Frontend
+### This repository contains the source code of the frontend.
 
-This is the frontend of the Terminal Project.
-
-Lean more [here](https://github.com/terminal-center/).
+Lean more [here](https://github.com/gTerminal-frontend/).
+Or use it [here](https://gterminal-project.github.io).
