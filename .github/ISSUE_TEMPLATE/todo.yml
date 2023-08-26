@@ -1,0 +1,21 @@
+name: ToDo
+assignees:
+  - J0J0HA
+description: Add a todo
+labels: enhancement
+body:
+  - type: checkboxes
+    id: issue-related
+    attributes:
+      label: Issue Related
+      description: Whether the todo is related to an issue or problem.
+      options:
+        - label: Is this feature request related to a problem or issue?
+          required: false
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Describe what to do.
+      placeholder: |
+        We need to finally add the icons now!!
