@@ -1,4 +1,4 @@
-name: Sync favicon
+name: codecov uplaod
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  change-favicon:
+  codecov:
     runs-on: ubuntu-latest
     
     permissions:
