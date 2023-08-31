@@ -33,13 +33,26 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: true
+    
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install --global jsdoc
+    
+      - name: Update docs
+        run: jsdoc -d docs main.js modules.js
+
       - name: Setup Pages
         uses: actions/configure-pages@v3
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          # Upload entire repository
           path: '.'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
