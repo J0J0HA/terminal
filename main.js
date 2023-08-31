@@ -215,7 +215,6 @@ class GTerminalIO {
         return new Promise((resolve, reject) => {
             const keydown = (event) => {
                 if (event.key == "Enter" || event.key == "Escape") {
-                    alert(1)
                     input.removeEventListener("keydown", keydown);
                     input.removeEventListener("keyup", keyup);
                     this.parent.io.println("");
