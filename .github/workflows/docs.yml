@@ -1,4 +1,4 @@
-name: Sync favicon
+name: Update docs
 
 on:
   push:
@@ -21,8 +21,16 @@ jobs:
       with:
           submodules: true
 
-    - name: Copy favicon
-      run: cp assets/favicons/favicon.ico favicon.ico
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+  
+    - name: Install dependencies
+      run: npm install --global jsdoc
+
+    - name: Update docs
+      run: jsdoc -d docs main.js modules.js
 
     - name: Commit & push changes
       run: |
