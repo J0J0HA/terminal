@@ -1,11 +1,21 @@
+:root {
+    --bg: black;
+    --fg: lime;
+}
+
 body {
     margin: 0;
     padding: 0;
-    background-color: black;
     font-family: "Courier Prime", monospace;
     font-size: 23px;
-    color: lime;
     cursor: text;
+}
+
+* {
+    background-color: var(--bg);
+    color: var(--fg);
+    --sel-bg: var(--fg);
+    --sel-fg: var(--bg);
 }
 
 #console {
@@ -25,6 +35,6 @@ body {
 }
 
 ::selection {
-    background-color: lime;
-    color: black;
+    background-color: var(--sel-bg);
+    color: var(--sel-fg);
 }
