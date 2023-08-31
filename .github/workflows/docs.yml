@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  change-favicon:
+  update-docs:
     runs-on: ubuntu-latest
     
     permissions:
@@ -32,11 +32,10 @@ jobs:
     - name: Update docs
       run: jsdoc -d docs main.js modules.js
 
-    - name: Commit & push changes
-      run: |
-        git add docs
-        git config --global user.name 'Git bot'
-        git config --global user.email 'bot@noreply.github.com'
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-        git commit -am "Copied favicon.ico" && git push || echo "No changes to commit"
-
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        commit-message: Updated JavaScript API documentation
+        title: Update docs
+        body: Updated JavaScript API documentation
+        branch: automated/docs-update
