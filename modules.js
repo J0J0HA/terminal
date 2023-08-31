@@ -1,58 +1,68 @@
+/**
+ * @file modules.js
+ * @description Default modules
+ * @requires main.js
+ */
+
+/**
+ * @type {InstalledModule}
+ */
 const main = gterminal.modules.register(
     "main",
     "Main",
     "Default commands"
 )
 
-const modulesman = gterminal.modules.register(
+/**
+ * @type {InstalledModule}
+ */
+const modules = gterminal.modules.register(
     "modules",
     "Module Manager",
     "Manage modules"
 )
 
-modulesman.registerCommand("modules", "Manage modules", async (full, rest) => {
+modules.registerCommand("modules", "Manage modules", async (full, rest) => {
     let srest = rest.split(" ");
     if (srest[0] == "tmpinstall") {
         gterminal.utils.loadFile(srest[1]);
         gterminal.io.println("File was added for this session.");
     }
     else if (srest[0] == "install") {
-        gterminal.utils.loadFile(srest[1]);
-        let module_list = JSON.parse(localStorage.getItem("modules") || "[]");
-        module_list.push(srest[1]);
-        localStorage.setItem("modules", JSON.stringify(module_list));
+        gterminal.modules.loadModule(srest[1]);
+        gterminal.config.addToList("installed_modules", srest[1]);
         gterminal.io.println("Module was added.");
     }
+    else if (srest[0] == "add-repo") {
+        gterminal.modules.loadRepo(srest[1]);
+        gterminal.config.addToList("added_repos", srest[1]);
+        gterminal.io.println("Repo was added.");
+    }
+    else if (srest[0] == "remove-repo") {
+        gterminal.config.removeFromList("added_repos", srest[1]);
+        gterminal.io.println("Repo was removed.");
+    }
+    else if (srest[0] == "remove") {
+        gterminal.config.removeFromList("installed_modules", srest[1]);
+        gterminal.io.println("Module was removed.");
+    }
     else if (srest[0] == "list") {
-        let module_list = JSON.parse(localStorage.getItem("modules") || "[]");
-        gterminal.io.println("These 3rd-party modules are installed globally:");
-        for (let module in module_list) {
-            gterminal.io.println(`[${module}] ${module_list[module]}`)
+        gterminal.io.println("Installed modules:");
+        for (let module of Object.values(gterminal.modules.modules)) {
+            gterminal.io.println(`- ${module.name} [${module.id}]`);
+        } 
+        if (gterminal.modules.modules.length == 0) {
+            gterminal.io.println("No modules installed.");
         }
-        gterminal.io.println("You can use 'y [index]' to uninstall the corresponding module.");
-        gterminal.commands.setY("modules uninstall-index ");
-    }
-    else if (srest[0] == "uninstall") {
-        let module_list = JSON.parse(localStorage.getItem("modules") || "[]");
-        const index = array.indexOf(srest[1]);
-        if (index !== -1) {
-            module_list.splice(index, 1);
-            localStorage.setItem("modules", JSON.stringify(module_list));
-            gterminal.io.println("Module was removed.");
-        } else {
-            gterminal.io.println("Module not found.");
+        gterminal.io.println("Added repos:");
+        for (let repo of Object.values(gterminal.modules.repos)) {
+            gterminal.io.println(`- ${repo.name} [${repo.id}]`);
+        }
+        if (gterminal.modules.repos.length == 0) {
+            gterminal.io.println("No repos added.");
         }
     }
-    else if (srest[0] == "uninstall-index") {
-        let module_list = JSON.parse(localStorage.getItem("modules") || "[]");
-        if (module_list.length > parseInt(srest[1])) {
-            module_list.splice(parseInt(srest[1]), 1);
-            localStorage.setItem("modules", JSON.stringify(module_list));
-            gterminal.io.println("Module was removed.");
-        } else {
-            gterminal.io.println("Module not found.");
-        }
-    }
+    gterminal.config.save();
 })
 
 main.registerCommand("this", "Open this project on github", async (full, rest) => {
@@ -97,20 +107,37 @@ main.registerCommand("sleep", "Do nothing and relax for the given amount of ms",
     await gterminal.utils.sleep(parseInt(rest));
 })
 
-gterminal.utils.loadFile("https://gterminal.is-a.dev/modules/module/github.js");
-gterminal.utils.loadFile("https://gterminal.is-a.dev/modules/module/you.js");
-gterminal.utils.loadFile("https://gterminal.is-a.dev/modules/module/google.js");
-gterminal.utils.loadFile("https://gterminal.is-a.dev/modules/module/openai.js");
-gterminal.utils.loadFile("https://gterminal.is-a.dev/modules/module/shortlinks.js");
-gterminal.utils.loadFile("https://gterminal.is-a.dev/modules/module/youtube.js");
-gterminal.utils.loadFile("https://gterminal.is-a.dev/modules/module/twitch.js");
-gterminal.utils.loadFile("https://gterminal.is-a.dev/modules/module/webdev.js");
+let repo_list = gterminal.config.get("added_repos", [
+    "https://gterminal.is-a.dev/modules/repo.json"
+]);
+gterminal.config.set("added_repos", repo_list);
 
-for (let url of JSON.parse(localStorage.getItem("modules") || "[]")) {
-    gterminal.utils.loadFile(url);
-}
+let module_list = gterminal.config.get("installed_modules", [
+    // "main:github",
+    // "main:you",
+    // "main:google",
+    // "main:openai",
+    // "main:shortlinks",
+    // "main:youtube",
+    // "main:twitch",
+    // "main:webdev"
+]);
+gterminal.config.set("installed_modules", module_list);
+gterminal.config.save();
 
-main.registerCommand("command_not_found", "[INTERNAL] Show notice that a command was not found.", async (full, rest) => {
-    gterminal.io.println(`The command "${rest}" could not be found. Did you mean "help"?`);
-    gterminal.commands.setY("help");
-})
+(async () => {
+    for (let repo in repo_list) {
+        await gterminal.modules.loadRepo(repo_list[repo]);
+    }
+
+    for (let module in module_list) {
+        await gterminal.modules.loadModule(module_list[module]);
+    }
+    
+    main.registerCommand("command_not_found", "[INTERNAL] Show notice that a command was not found.", async (full, rest) => {
+        gterminal.io.println(`The command "${rest}" could not be found. Did you mean "help"?`);
+        gterminal.commands.setY("help");
+    })
+})()
+
+

@@ -11,7 +11,6 @@ Or try it out [here](https://gterminal.is-a.dev/).
 
 You can find the JavaScript API documentation [here](https://gterminal.is-a.dev/docs/).
 
-
 ## Credits
 
 Credits for the whole project such as the logo or the font are specified [here](https://github.com/gTerminal-project/.github/).
