@@ -40,3 +40,4 @@ jobs:
         title: Update docs
         body: Updated JavaScript API documentation
         branch: automated/docs-update
+        token: ${{ secrets.PA_TOKEN }}
