@@ -40,10 +40,10 @@ jobs:
           node-version: '14'
 
       - name: Install dependencies
-        run: npm install --global jsdoc
+        run: npm install jsdoc docdash
     
       - name: Update docs
-        run: jsdoc -d docs main.js modules.js
+        run: jsdoc -c jsdoc.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
