@@ -16,25 +16,31 @@ gterminal.modules.repos["_"] = new Repo(gterminal, "_", "_", {
         "script": "#",
         "commands": {
             "this": {
-                "description": "?"
+                "description": "Open this project on github"
             },
             "y": {
-                "description": "?"
+                "description": "Run the y command"
             },
             "copy": {
-                "description": "?"
+                "description": "Retry to copy the last copied value or copy the given value if present"
+            },
+            "apidocs": {
+                "description": "Open the JavaScript docs"
+            },
+            "docs": {
+                "description": "Open the wiki"
             },
             "open": {
-                "description": "?"
+                "description": "Open the URL provided"
             },
             "help": {
-                "description": "?"
+                "description": "Show all commands or description of a specific command"
             },
             "do": {
-                "description": "?"
+                "description": "Run the given command"
             },
             "sleep": {
-                "description": "?"
+                "description": "Wait the given amount of ms"
             }
         }
     },
@@ -109,6 +115,16 @@ modules.registerCommand("modules", async (full, rest) => {
 
 main.registerCommand("this", async (full, rest) => {
     gterminal.web.goto("https://github.com/gterminal-project/");
+    gterminal.io.println("Please wait...");
+})
+
+main.registerCommand("docs", async (full, rest) => {
+    gterminal.web.goto("https://github.com/gterminal-project/.github/wiki/Basics");
+    gterminal.io.println("Please wait...");
+})
+
+main.registerCommand("apidocs", async (full, rest) => {
+    gterminal.web.goto("docs");
     gterminal.io.println("Please wait...");
 })
 
