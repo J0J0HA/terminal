@@ -43,7 +43,7 @@ jobs:
         run: npm install jsdoc docdash
     
       - name: Update docs
-        run: jsdoc -c jsdoc.json
+        run: ./node_modules/.bin/jsdoc -c jsdoc.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
