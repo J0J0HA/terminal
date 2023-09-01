@@ -1,0 +1,20 @@
+{
+  "name": "gterminal-project.github.io",
+  "version": "1.4",
+  "description": "gTerminal Webinterface",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "generate-docs": "node_modules/.bin/jsdoc -c jsdoc.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "htpps://github.com/gterminal-project/gterminal-project.github.io"
+  },
+  "author": "gTerminal Project (J0J0HA/JoJoJux)",
+  "dependencies": {
+    "docdash": "^2.0.2",
+    "jsdoc": "^4.0.2"
+  }
+}
