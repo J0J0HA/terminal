@@ -1092,7 +1092,7 @@ class GTerminal {
      */
     async _loop() {
         if (params.cmd) {
-            out(`> ${params.cmd}`)
+            gterminal.io.println(`> ${params.cmd}`, gterminal.io.OUT)
             await this.commands.exec(params.cmd)
         }
         while (true) {
