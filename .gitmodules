@@ -2,5 +2,5 @@
 	path = assets
 	url = https://github.com/gterminal-project/.github.git
 [submodule "modules"]
-	path = modules
+	path = mod
 	url = https://github.com/gterminal-project/modules.git
