@@ -9,9 +9,9 @@
  * @private
  */
 
-gterminal.modules.repos["_"] = new Repo(gterminal, "_", "_", {
-    "main": {
-        "name": "Main",
+gterminal.modules.repos["builtins"] = new Repo(gterminal, "builtins", "builtins", {
+    "builtins": {
+        "name": "Built-Ins",
         "description": "Default commands",
         "script": "#",
         "commands": {
@@ -41,6 +41,9 @@ gterminal.modules.repos["_"] = new Repo(gterminal, "_", "_", {
             },
             "sleep": {
                 "description": "Wait the given amount of ms"
+            },
+            "reset": {
+                "description": "Reset localStorage. This will delete all your data."
             }
         }
     },
@@ -56,8 +59,8 @@ gterminal.modules.repos["_"] = new Repo(gterminal, "_", "_", {
     }
 })
 
-const main = gterminal.modules.register(
-    "_:main"
+const builtins = gterminal.modules.register(
+    "builtins:builtins"
 )
 
 /**
@@ -65,10 +68,10 @@ const main = gterminal.modules.register(
  * @private
  */
 const modules = gterminal.modules.register(
-    "_:modules"
+    "builtins:modules"
 )
 
-console.log(main, modules);
+console.log(builtins, modules);
 
 modules.registerCommand("modules", async (full, rest) => {
     let srest = rest.split(" ");
@@ -113,26 +116,26 @@ modules.registerCommand("modules", async (full, rest) => {
     gterminal.config.save();
 })
 
-main.registerCommand("this", async (full, rest) => {
+builtins.registerCommand("this", async (full, rest) => {
     gterminal.web.goto("https://github.com/gterminal-project/");
     gterminal.io.println("Please wait...");
 })
 
-main.registerCommand("docs", async (full, rest) => {
+builtins.registerCommand("docs", async (full, rest) => {
     gterminal.web.goto("https://github.com/gterminal-project/.github/wiki/Basics");
     gterminal.io.println("Please wait...");
 })
 
-main.registerCommand("apidocs", async (full, rest) => {
+builtins.registerCommand("apidocs", async (full, rest) => {
     gterminal.web.goto("docs");
     gterminal.io.println("Please wait...");
 })
 
-main.registerCommand("y", async (full, rest) => {
+builtins.registerCommand("y", async (full, rest) => {
     gterminal.commands.exec(y_command + rest);
 })
 
-main.registerCommand("copy", async (full, rest) => {
+builtins.registerCommand("copy", async (full, rest) => {
     if (rest) {
         gterminal.clipboard.copy(rest);
     } else {
@@ -141,11 +144,11 @@ main.registerCommand("copy", async (full, rest) => {
     gterminal.io.println(`Copied to clipboard: ${gterminal.clipboard.last_copy}`);
 })
 
-main.registerCommand("do", async (full, rest) => {
+builtins.registerCommand("do", async (full, rest) => {
     gterminal.commands.exec(rest);
 })
 
-main.registerCommand("help", async (full, rest) => {
+builtins.registerCommand("help", async (full, rest) => {
     if (rest) {
         gterminal.io.println(gterminal.commands.exec)
     } else {
@@ -159,12 +162,16 @@ main.registerCommand("help", async (full, rest) => {
     }
 })
 
-main.registerCommand("open", async (full, rest) => {
+builtins.registerCommand("open", async (full, rest) => {
     gterminal.web.goto(rest);
     gterminal.io.println("Please wait...");
 })
 
-main.registerCommand("sleep", async (full, rest) => {
+builtins.registerCommand("sleep", async (full, rest) => {
     await gterminal.utils.sleep(parseInt(rest));
 })
 
+builtins.registerCommand("reset", async (full, rest) => {
+    localStorage.clear();
+    gterminal.io.println("localStorage was cleared.");
+})

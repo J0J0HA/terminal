@@ -1,0 +1,26 @@
+{
+    "instance": {
+        "name": "gTerminal",
+        "author": {
+            "name": "gTerminal Project",
+            "website": "https://github.com/gterminal-project"
+        },
+        "license": "GNU v3",
+        "repo": "https://github.com/gterminal-project/gterminal"
+    },
+    "fallbacks": {
+        "repos": [
+            "https://gterminal.js.org/modules/repo.json"
+        ],
+        "modules": [
+            "main:github",
+            "main:you",
+            "main:google",
+            "main:openai",
+            "main:shortlinks",
+            "main:youtube",
+            "main:twitch",
+            "main:webdev"
+        ]
+    }
+}
