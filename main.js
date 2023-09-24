@@ -593,7 +593,7 @@ class Module {
      * @param {function} handler Handler for command
      */
     registerCommand(cmd, handler) {
-        console.log(cmd, this.commands)
+        console.log(cmd, this.commands);
         this.commands[cmd].handler = handler;
     }
 
