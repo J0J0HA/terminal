@@ -1103,7 +1103,7 @@ class GTerminal {
 
     async _loadData() {
         let repo_list = gterminal.config.get("added_repos", [
-            "/mod/repo.json"
+            "/modules/repo.json"
         ]);
         gterminal.config.set("added_repos", repo_list);
 
