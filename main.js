@@ -1103,7 +1103,7 @@ class GTerminal {
 
     async _loadData() {
         let repo_list = gterminal.config.get("added_repos", [
-            "/mod/repo.json"
+            "https://gterminal.js.org/mod/repo.json"
         ]);
         gterminal.config.set("added_repos", repo_list);
 
@@ -1121,11 +1121,21 @@ class GTerminal {
         gterminal.config.save();
 
         for (let repo in repo_list) {
-            await gterminal.modules.loadRepo(repo_list[repo]);
+            try {
+                await gterminal.modules.loadRepo(repo_list[repo]);
+            } catch (e) {
+                gterminal.io.println(`Failed to load repo ${repo_list[repo]}: ${e.toString()}`, gterminal.io.ERROR);
+                console.error(e);
+            }
         }
 
         for (let module in module_list) {
-            await gterminal.modules.loadModule(module_list[module]);
+            try {
+                await gterminal.modules.loadModule(module_list[module]);
+            } catch (e) {
+                gterminal.io.println(`Failed to load module ${module_list[module]}: ${e.toString()}`, gterminal.io.ERROR);
+                console.error(e);
+            }
         }
 
         // main.registerCommand("command_not_found", "[INTERNAL] Show notice that a command was not found.", async (full, rest) => {
