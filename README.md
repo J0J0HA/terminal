@@ -5,11 +5,11 @@
 [![Sync favicon](https://github.com/gTerminal-project/gTerminal-project.github.io/actions/workflows/favicon.yml/badge.svg)](https://github.com/gTerminal-project/gTerminal-project.github.io/actions/workflows/favicon.yml)
 
 Lean more about gTerminal [here](https://github.com/gTerminal-project/);
-Or try it out [here](https://gterminal.is-a.dev/).
+Or try it out [here](https://gterminal.js.org/).
 
 ## JavaScript API
 
-You can find the JavaScript API documentation [here](https://gterminal.is-a.dev/docs/).
+You can find the JavaScript API documentation [here](https://gterminal.js.org/docs/).
 
 ## Credits
 
