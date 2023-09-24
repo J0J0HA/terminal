@@ -1,6 +1,6 @@
 {
   "name": "gterminal-project.github.io",
-  "version": "1.4",
+  "version": "1.4.0",
   "description": "gTerminal Webinterface",
   "directories": {
     "doc": "docs"
