@@ -1,3 +1,6 @@
 [submodule "assets"]
 	path = assets
 	url = https://github.com/gterminal-project/.github.git
+[submodule "modules"]
+	path = modules
+	url = https://github.com/gterminal-project/modules.git
