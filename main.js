@@ -894,9 +894,13 @@ class GTerminalConfig {
      * @constructor
      * @param {GTerminal} parent Parent {@link GTerminal} object
      */
-    constructor(parent) {
+    constructor(parent, path) {
         /** Parent {@link GTerminal} object */
         this.parent = parent;
+        /** Path to config file */
+        this.config_path = path;
+        /** Settings object */
+        this.settings = {};
         /** Config object */
         this.config = {};
     }
@@ -904,19 +908,26 @@ class GTerminalConfig {
     /**
      * Load config from localStorage
      */
-    load() {
+    async load() {
+        try {
+            this.config = await (await fetch(this.config_path)).json()
+        } catch (e) {
+            gterminal.io.println(`[FATAL] Failed to load config file: ${e.toString()}`, gterminal.io.ERROR);
+            console.error(e);
+        }
+
         const data = localStorage.getItem("config");
         if (data) {
             try {
-                this.config = JSON.parse(data);
+                this.settings = JSON.parse(data);
             } catch (e) {
                 this.parent.io.println("Failed to load config: " + e.toString(), gterminal.io.ERROR);
                 console.error(e);
-                this.config = {};
+                this.settings = {};
             }
         } else {
             this.parent.io.println("No config found.", gterminal.io.WARN);
-            this.config = {};
+            this.settings = {};
         }
     }
 
@@ -924,7 +935,7 @@ class GTerminalConfig {
      * Save config to localStorage
      */
     save() {
-        localStorage.setItem("config", JSON.stringify(this.config));
+        localStorage.setItem("config", JSON.stringify(this.settings));
     }
 
     /**
@@ -938,8 +949,8 @@ class GTerminalConfig {
     get(key, fallback = undefined) {
         if (typeof key != "string") throw new Error("Key must be a string");
         if (key == "" || key == undefined || key == null || key == NaN) throw new Error("Key must not be empty, undefined, null or NaN");
-        if (Object.keys(this.config).indexOf(key) == -1 && fallback == undefined) throw new Error("Key not found");
-        return this.config[key] || fallback;
+        if (Object.keys(this.settings).indexOf(key) == -1 && fallback == undefined) throw new Error("Key not found");
+        return this.settings[key] || fallback;
     }
 
     /**
@@ -954,7 +965,7 @@ class GTerminalConfig {
         if (typeof key != "string") throw new Error("Key must be a string");
         if (key == "") throw new Error("Key must not be empty");
         if (value == undefined || value == null || value == NaN) throw new Error("Value must not be undefined, null or NaN");
-        this.config[key] = value;
+        this.settings[key] = value;
     }
 
     /**
@@ -967,8 +978,8 @@ class GTerminalConfig {
     delete(key) {
         if (typeof key != "string") throw new Error("Key must be a string");
         if (key == "" || key == undefined || key == null || key == NaN) throw new Error("Key must not be empty, undefined, null or NaN");
-        if (Object.keys(this.config).indexOf(key) == -1) throw new Error("Key not found");
-        delete this.config[key];
+        if (Object.keys(this.settings).indexOf(key) == -1) throw new Error("Key not found");
+        delete this.settings[key];
     }
 
     /**
@@ -984,9 +995,9 @@ class GTerminalConfig {
         if (typeof key != "string") throw new Error("Key must be a string");
         if (key == "" || key == undefined || key == null || key == NaN) throw new Error("Key must not be empty, undefined, null or NaN");
         if (value == undefined || value == null || value == NaN) throw new Error("Value must not be undefined, null or NaN");
-        if (!Array.isArray(this.config[key])) throw new Error("Object must be a list");
-        if (Object.keys(this.config).indexOf(key) == -1) this.config[key] = [];
-        if (this.config[key].indexOf(value) == -1) this.config[key].push(value);
+        if (!Array.isArray(this.settings[key])) throw new Error("Object must be a list");
+        if (Object.keys(this.settings).indexOf(key) == -1) this.settings[key] = [];
+        if (this.settings[key].indexOf(value) == -1) this.settings[key].push(value);
     }
 
     /**
@@ -1001,9 +1012,9 @@ class GTerminalConfig {
     removeFromList(key, value) {
         if (typeof key != "string") throw new Error("Key must be a string");
         if (key == "" || key == undefined || key == null || key == NaN) throw new Error("Key must not be empty, undefined, null or NaN");
-        if (Object.keys(this.config).indexOf(key) == -1) throw new Error("Key not found");
-        if (!Array.isArray(this.config[key])) throw new Error("Object must be a list");
-        if (this.config[key].indexOf(value) != -1) this.config[key].splice(this.config[key].indexOf(value), 1);
+        if (Object.keys(this.settings).indexOf(key) == -1) throw new Error("Key not found");
+        if (!Array.isArray(this.settings[key])) throw new Error("Object must be a list");
+        if (this.settings[key].indexOf(value) != -1) this.settings[key].splice(this.settings[key].indexOf(value), 1);
     }
 }
 
@@ -1013,12 +1024,19 @@ class GTerminalConfig {
 class GTerminal {
     /** 
      * @constructor
+     * @param {string} config_path Path to config file
     */
-    constructor() {
+    constructor(config_path) {
         /**
          * API Version
          */
         this.api_version = "1.3";
+
+        /**
+         * Path to config file
+         * @type {string}
+         */
+        this.config_path = config_path;
 
         /**
          * Access to the {@link GTerminalClipboard} API.
@@ -1066,7 +1084,7 @@ class GTerminal {
          * Access to the {@link GTerminalConfig} API.
          * @type GTerminalConfig
         */
-        this.config = new GTerminalConfig(this);
+        this.config = new GTerminalConfig(this, this.config_path);
     }
 
     /**
@@ -1102,21 +1120,10 @@ class GTerminal {
     }
 
     async _loadData() {
-        let repo_list = gterminal.config.get("added_repos", [
-            "/modules/repo.json"
-        ]);
+        let repo_list = gterminal.config.get("added_repos", gterminal.config.config.fallbacks.repos);
         gterminal.config.set("added_repos", repo_list);
 
-        let module_list = gterminal.config.get("installed_modules", [
-            "main:github",
-            "main:you",
-            "main:google",
-            "main:openai",
-            "main:shortlinks",
-            "main:youtube",
-            "main:twitch",
-            "main:webdev"
-        ]);
+        let module_list = gterminal.config.get("installed_modules", gterminal.config.config.fallbacks.modules);
         gterminal.config.set("installed_modules", module_list);
         gterminal.config.save();
 
@@ -1137,12 +1144,6 @@ class GTerminal {
                 console.error(e);
             }
         }
-
-        // main.registerCommand("command_not_found", "[INTERNAL] Show notice that a command was not found.", async (full, rest) => {
-        //     gterminal.io.println(`The command "${rest}" could not be found. Did you mean "help"?`);
-        //     gterminal.commands.setY("help");
-        // })
-
     }
 
     /**
@@ -1156,7 +1157,7 @@ class GTerminal {
         this.io.println("Setting Event Listeners...");
         this._setTriggers();
         this.io.println("Loading Config...");
-        this.config.load();
+        await this.config.load();
         this.io.println("Loading Repos, Modules and Commands...");
         await this.utils.loadFile("modules.js");
         await this._loadData();
@@ -1176,5 +1177,5 @@ class GTerminal {
 }
 
 /** Access to the {@link GTerminal} API */
-const gterminal = new GTerminal();
+const gterminal = new GTerminal("config.json");
 gterminal.init();
