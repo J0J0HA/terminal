@@ -8,6 +8,11 @@
         "license": "GNU v3",
         "repo": "https://github.com/gterminal-project/gterminal"
     },
+    "links": {
+        "docs": "https://github.com/gTerminal-project/.github/wiki/Getting-Started",
+        "apidocs": "https://gterminal.js.org/docs/",
+        "github": "https://github.com/gterminal-project/"
+    },
     "fallbacks": {
         "repos": [
             "https://gterminal.js.org/modules/repo.json"
