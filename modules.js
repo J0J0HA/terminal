@@ -33,6 +33,9 @@ gterminal.modules.repos["builtins"] = new Repo(gterminal, "builtins", "builtins"
             "open": {
                 "description": "Open the URL provided"
             },
+            "font": {
+                "description": "Change the font for the current session"
+            },
             "help": {
                 "description": "Show all commands or description of a specific command"
             },
@@ -117,18 +120,15 @@ modules.registerCommand("modules", async (full, rest) => {
 })
 
 builtins.registerCommand("this", async (full, rest) => {
-    gterminal.web.goto("https://github.com/gterminal-project/");
-    gterminal.io.println("Please wait...");
+    gterminal.web.goto(gterminal.config.config.links.github);
 })
 
 builtins.registerCommand("docs", async (full, rest) => {
-    gterminal.web.goto("https://github.com/gterminal-project/.github/wiki/Basics");
-    gterminal.io.println("Please wait...");
+    gterminal.web.goto(gterminal.config.config.links.docs);
 })
 
 builtins.registerCommand("apidocs", async (full, rest) => {
-    gterminal.web.goto("docs");
-    gterminal.io.println("Please wait...");
+    gterminal.web.goto(gterminal.config.config.links.apidocs);
 })
 
 builtins.registerCommand("y", async (full, rest) => {
@@ -164,7 +164,10 @@ builtins.registerCommand("help", async (full, rest) => {
 
 builtins.registerCommand("open", async (full, rest) => {
     gterminal.web.goto(rest);
-    gterminal.io.println("Please wait...");
+})
+
+builtins.registerCommand("font", async (full, rest) => {
+    document.querySelector(":root").style.setProperty("--font", rest);
 })
 
 builtins.registerCommand("sleep", async (full, rest) => {

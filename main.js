@@ -906,7 +906,7 @@ class GTerminalConfig {
     }
 
     /**
-     * Load config from localStorage
+     * Load config from localStorage and config file
      */
     async load() {
         try {
@@ -916,17 +916,17 @@ class GTerminalConfig {
             console.error(e);
         }
 
-        const data = localStorage.getItem("config");
+        const data = localStorage.getItem("settings");
         if (data) {
             try {
                 this.settings = JSON.parse(data);
             } catch (e) {
-                this.parent.io.println("Failed to load config: " + e.toString(), gterminal.io.ERROR);
+                this.parent.io.println("Failed to load settings: " + e.toString(), gterminal.io.ERROR);
                 console.error(e);
                 this.settings = {};
             }
         } else {
-            this.parent.io.println("No config found.", gterminal.io.WARN);
+            this.parent.io.println("No settings found", gterminal.io.WARN);
             this.settings = {};
         }
     }
@@ -935,11 +935,11 @@ class GTerminalConfig {
      * Save config to localStorage
      */
     save() {
-        localStorage.setItem("config", JSON.stringify(this.settings));
+        localStorage.setItem("settings", JSON.stringify(this.settings));
     }
 
     /**
-     * Get a config value
+     * Get a settings value
      * @param {string} key Key to get
      * @returns Value
      * @throws {Error} If key is not found
@@ -954,7 +954,7 @@ class GTerminalConfig {
     }
 
     /**
-     * Set a config value
+     * Set a settings value
      * @param {string} key Key to set
      * @param {*} value Value to set
      * @throws {Error} If key is not a string
@@ -969,7 +969,7 @@ class GTerminalConfig {
     }
 
     /**
-     * Delete a config value
+     * Delete a settings value
      * @param {string} key Key to delete
      * @throws {Error} If key is not a string
      * @throws {Error} If key is empty, undefined, null, NaN
@@ -983,7 +983,7 @@ class GTerminalConfig {
     }
 
     /**
-     * add a value to a list config value (if not already in list)
+     * add a value to a list settings value (if not already in list)
      * @param {string} key Key to add to list
      * @param {*} value Value to add
      * @throws {Error} If key is not a string
@@ -1001,7 +1001,7 @@ class GTerminalConfig {
     }
 
     /**
-     * remove a value from a list config value (if in list)
+     * remove a value from a list settings value (if in list)
      * @param {string} key Key to remove from list
      * @param {*} value Value to remove
      * @throws {Error} If key is not a string
